@@ -29,20 +29,26 @@ app.get("/api/", function(req,res){
 });
   
 app.get("/api/:date", function(req,res){
-  if (isNaN(req.params.date)){stringDate=new Date(req.params.date)
-
-  }
-  else {stringDate=parseInt(req.params.date)
-  stringDate=new Date(stringDate)}
+  stringDate=dateConverter(req.params.date);
+  
   if(stringDate=="Invalid Date"){
     res.json({ error : "Invalid Date" })
   }
 
-  else{
   res.json({unix: stringDate.getTime(), utc:stringDate.toUTCString()})
-    }
 });
 
+function dateConverter(date){
+  if (isNaN(date))
+  {
+    stringDate=new Date(date)
+  }
+  else {
+    stringDate=parseInt(date)
+    stringDate=new Date(stringDate)
+  }
+  return stringDate;
+}
 
 
 // listen for requests :)
